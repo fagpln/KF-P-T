@@ -1,0 +1,2775 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KF Sabores - Delivery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* VARIÁVEIS DE CORES */
+        :root {
+            --vermelho: #D32F2F;
+            --vermelho-escuro: #B71C1C;
+            --amarelo: #FFC107;
+            --amarelo-escuro: #FFA000;
+            --cinza-escuro: #212121;
+            --cinza: #424242;
+            --cinza-claro: #757575;
+            --branco: #FFFFFF;
+            --fundo: #FAFAFA;
+            --verde: #4CAF50;
+            --azul: #2196F3;
+            --roxo: #9C27B0;
+        }
+        
+        /* RESET E BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+        
+        body {
+            background-color: var(--fundo);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* HEADER SUPERIOR */
+        .top-bar {
+            background: linear-gradient(135deg, var(--vermelho), var(--vermelho-escuro));
+            color: var(--branco);
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar-info {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .top-bar-info i {
+            margin-right: 5px;
+            color: var(--amarelo);
+        }
+        
+        /* HEADER PRINCIPAL */
+        .main-header {
+            background: var(--branco);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            background: var(--vermelho);
+            color: var(--amarelo);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+        
+        .logo-text h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--vermelho);
+            line-height: 1;
+        }
+        
+        .logo-text p {
+            color: var(--cinza);
+            font-size: 0.9rem;
+        }
+        
+        .cart-btn {
+            background: var(--amarelo);
+            color: var(--cinza-escuro);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(255, 193, 7, 0.2);
+        }
+        
+        .cart-btn:hover {
+            background: var(--amarelo-escuro);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 193, 7, 0.3);
+        }
+        
+        .cart-count {
+            background: var(--vermelho);
+            color: var(--branco);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        /* NAVEGAÇÃO */
+        .main-nav {
+            background: var(--branco);
+            border-top: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+            padding: 0;
+        }
+        
+        .nav-tabs li {
+            flex-shrink: 0;
+        }
+        
+        .nav-tab {
+            padding: 18px 25px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--cinza);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        
+        .nav-tab:hover,
+        .nav-tab.active {
+            color: var(--vermelho);
+            border-bottom: 3px solid var(--vermelho);
+        }
+        
+        /* SEÇÕES DO MENU */
+        .menu-section {
+            display: none;
+            padding: 30px 0;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .menu-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-header {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--vermelho);
+        }
+        
+        .section-icon {
+            background: var(--vermelho);
+            color: var(--amarelo);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-subtitle {
+            color: var(--cinza-claro);
+            font-size: 1rem;
+        }
+        
+        /* GRID DE PRODUTOS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .product-card {
+            background: var(--branco);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--verde);
+            color: var(--branco);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .product-image {
+            height: 180px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--vermelho);
+            font-size: 4rem;
+        }
+        
+        .product-content {
+            padding: 20px;
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cinza-escuro);
+            margin-right: 10px;
+        }
+        
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--vermelho);
+            white-space: nowrap;
+        }
+        
+        .product-description {
+            color: var(--cinza-claro);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        /* PIZZA - TAMANHOS */
+        .pizza-sizes {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .size-option {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .size-option:hover {
+            border-color: var(--vermelho);
+        }
+        
+        .size-option.active {
+            border-color: var(--vermelho);
+            background: rgba(211, 47, 47, 0.05);
+        }
+        
+        .size-name {
+            font-weight: 600;
+            color: var(--cinza-escuro);
+        }
+        
+        .size-price {
+            font-weight: 700;
+            color: var(--vermelho);
+            font-size: 1.1rem;
+        }
+        
+        /* TAPIOCA BUILDER */
+        .builder-section {
+            background: var(--branco);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .builder-title {
+            color: var(--vermelho);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .builder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .builder-option {
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .builder-option:hover {
+            border-color: var(--vermelho);
+        }
+        
+        .builder-option.selected {
+            border-color: var(--vermelho);
+            background: rgba(211, 47, 47, 0.05);
+        }
+        
+        .option-name {
+            font-weight: 600;
+            color: var(--cinza-escuro);
+            margin-bottom: 5px;
+        }
+        
+        .option-price {
+            font-weight: 700;
+            color: var(--vermelho);
+        }
+        
+        /* FORMULÁRIOS */
+        .form-section {
+            background: var(--branco);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--cinza-escuro);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--vermelho);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .payment-option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--vermelho);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--vermelho);
+            background: rgba(211, 47, 47, 0.05);
+        }
+        
+        /* MODAIS */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--branco);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: modalSlide 0.3s ease;
+        }
+        
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            background: var(--vermelho);
+            color: var(--branco);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--branco);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 25px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+        
+        /* CARRINHO */
+        .cart-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: flex-end;
+        }
+        
+        .cart-overlay.active {
+            display: flex;
+        }
+        
+        .cart-panel {
+            background: var(--branco);
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .cart-header {
+            background: var(--vermelho);
+            color: var(--branco);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-steps {
+            display: flex;
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-weight: 600;
+            color: var(--cinza-claro);
+            position: relative;
+        }
+        
+        .step.active {
+            color: var(--vermelho);
+        }
+        
+        .step.active .step-number {
+            background: var(--vermelho);
+            color: white;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%;
+            background: #ddd;
+            color: var(--cinza-claro);
+            margin-bottom: 5px;
+        }
+        
+        .cart-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .cart-items {
+            margin-bottom: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-info h4 {
+            margin-bottom: 5px;
+            color: var(--cinza-escuro);
+        }
+        
+        .cart-item-details {
+            color: var(--cinza-claro);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--vermelho);
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .cart-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .cart-summary {
+            background: #f9f9f9;
+            padding: 25px;
+            border-top: 1px solid #eee;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .summary-total {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--vermelho);
+            border-top: 2px solid #ddd;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        /* BOTÕES */
+        .btn-primary {
+            background: var(--vermelho);
+            color: var(--branco);
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: var(--vermelho-escuro);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--amarelo);
+            color: var(--cinza-escuro);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--amarelo-escuro);
+        }
+        
+        .btn-next, .btn-back {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-next {
+            background: var(--verde);
+            color: white;
+        }
+        
+        .btn-back {
+            background: #eee;
+            color: var(--cinza-escuro);
+        }
+        
+        .btn-next:hover {
+            background: #388E3C;
+        }
+        
+        .btn-back:hover {
+            background: #ddd;
+        }
+        
+        /* FOOTER */
+        .main-footer {
+            background: var(--cinza-escuro);
+            color: var(--branco);
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            color: var(--amarelo);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column p, .footer-column li {
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .whatsapp-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-contact:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        /* ADMIN PANEL */
+        .admin-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .admin-toggle {
+            background: var(--azul);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .admin-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2001;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .admin-modal.active {
+            display: flex;
+        }
+        
+        .admin-content {
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .admin-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--cinza);
+            cursor: pointer;
+        }
+        
+        .admin-tab.active {
+            color: var(--azul);
+            border-bottom: 3px solid var(--azul);
+            background: white;
+        }
+        
+        .admin-section {
+            display: none;
+            padding: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: var(--cinza-escuro);
+        }
+        
+        .admin-table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .edit-btn, .save-btn, .cancel-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+        
+        .edit-btn {
+            background: var(--azul);
+            color: white;
+        }
+        
+        .save-btn {
+            background: var(--verde);
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        .price-input {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: right;
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-bar-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .top-bar-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-tabs {
+                justify-content: flex-start;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-panel {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-info">
+                <div><i class="fas fa-clock"></i> Aberto: 20:00 - 00:00</div>
+                <div><i class="fas fa-phone"></i> (21) 99743-7285</div>
+            </div>
+            <div class="top-bar-info">
+                <div><i class="fas fa-map-marker-alt"></i> Rua Pitombeiras 488, Paciência</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- HEADER PRINCIPAL -->
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-pizza-slice"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>KF SABORES</h1>
+                    <p>Pizzaria & Tapiocaria • Delivery</p>
+                </div>
+            </div>
+            
+            <button class="cart-btn" id="openCart">
+                <i class="fas fa-shopping-cart"></i>
+                <span>MEU PEDIDO</span>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- NAVEGAÇÃO -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-tabs">
+                <li><button class="nav-tab active" data-target="pizzas"><i class="fas fa-pizza-slice"></i> Pizzas</button></li>
+                <li><button class="nav-tab" data-target="tapiocas"><i class="fas fa-bread-slice"></i> Tapiocas</button></li>
+                <li><button class="nav-tab" data-target="bebidas"><i class="fas fa-wine-bottle"></i> Bebidas</button></li>
+                <li><button class="nav-tab" data-target="mapa"><i class="fas fa-map"></i> Área de Entrega</button></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="container">
+        <!-- PIZZAS -->
+        <section id="pizzas" class="menu-section active">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <h2>Nossas Pizzas</h2>
+                </div>
+                <p class="section-subtitle">Escolha até 2 sabores • Cobrado o valor da mais cara</p>
+            </div>
+            
+            <!-- TRADICIONAIS -->
+            <h3 style="color: var(--vermelho); margin-bottom: 20px; font-size: 1.4rem;">Tradicionais</h3>
+            <div class="products-grid" id="pizzas-tradicionais"></div>
+            
+            <!-- ESPECIAIS -->
+            <h3 style="color: var(--vermelho); margin-bottom: 20px; font-size: 1.4rem;">Especiais</h3>
+            <div class="products-grid" id="pizzas-especiais"></div>
+            
+            <!-- PREMIUM -->
+            <h3 style="color: var(--vermelho); margin-bottom: 20px; font-size: 1.4rem;">Premium</h3>
+            <div class="products-grid" id="pizzas-premium"></div>
+            
+            <!-- DOCES -->
+            <h3 style="color: var(--vermelho); margin-bottom: 20px; font-size: 1.4rem;">Pizzas Doces</h3>
+            <div class="products-grid" id="pizzas-doces"></div>
+        </section>
+        
+        <!-- TAPIOCAS -->
+        <section id="tapiocas" class="menu-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <h2>Tapiocas Personalizadas</h2>
+                </div>
+                <p class="section-subtitle">Escolha 2 recheios + 1 acompanhamento grátis • Cobrado o recheio mais caro</p>
+            </div>
+            
+            <div class="builder-section">
+                <h3 class="builder-title">1. Escolha seus recheios (2 opções)</h3>
+                <div class="builder-grid" id="recheios-grid"></div>
+                
+                <h3 class="builder-title">2. Escolha seu acompanhamento (1 grátis)</h3>
+                <div class="builder-grid" id="acompanhamentos-grid"></div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <div style="font-size: 1.3rem; margin-bottom: 15px;">
+                        <strong>Valor da Tapioca:</strong> 
+                        <span id="tapioca-preco" style="color: var(--vermelho); font-size: 1.5rem;">R$ 0,00</span>
+                    </div>
+                    <button class="btn-primary" id="addTapiocaBtn" disabled>
+                        <i class="fas fa-cart-plus"></i> Adicionar Tapioca ao Carrinho
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- BEBIDAS -->
+        <section id="bebidas" class="menu-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-wine-bottle"></i>
+                    </div>
+                    <h2>Bebidas</h2>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="bebidas-grid"></div>
+        </section>
+        
+        <!-- MAPA DE ENTREGA -->
+        <section id="mapa" class="menu-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-map"></i>
+                    </div>
+                    <h2>Área de Entrega</h2>
+                </div>
+                <p class="section-subtitle">Confira se entregamos no seu endereço</p>
+            </div>
+            
+            <div class="builder-section">
+                <h3 class="builder-title">Zonas de Entrega</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; border-left: 4px solid var(--verde);">
+                        <h4 style="color: var(--verde); margin-bottom: 10px;">Zona 1</h4>
+                        <p>Taxa: <strong>R$ 3,00</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--cinza-claro);">Entregamos em até 30 min</p>
+                    </div>
+                    <div style="background: #fff3e0; padding: 20px; border-radius: 10px; border-left: 4px solid var(--amarelo);">
+                        <h4 style="color: var(--amarelo-escuro); margin-bottom: 10px;">Zona 2</h4>
+                        <p>Taxa: <strong>R$ 5,00</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--cinza-claro);">Entregamos em até 40 min</p>
+                    </div>
+                    <div style="background: #ffebee; padding: 20px; border-radius: 10px; border-left: 4px solid var(--vermelho);">
+                        <h4 style="color: var(--vermelho); margin-bottom: 10px;">Zona 3</h4>
+                        <p>Taxa: <strong>R$ 8,00</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--cinza-claro);">Entregamos em até 50 min</p>
+                    </div>
+                </div>
+                
+                <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="margin-bottom: 15px; color: var(--cinza-escuro);">Verifique sua zona</h4>
+                    <input type="text" id="cepInput" placeholder="Digite seu CEP ou endereço" 
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 15px;">
+                    <button class="btn-secondary" id="verificarZonaBtn">
+                        <i class="fas fa-search"></i> Verificar Zona
+                    </button>
+                    <div id="zonaResultado" style="margin-top: 15px; padding: 15px; border-radius: 8px; display: none;"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- MODAL SEGUNDO SABOR -->
+    <div class="modal-overlay" id="saborModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Escolha o segundo sabor</h3>
+                <button class="modal-close" id="closeSaborModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px;">Selecione o segundo sabor para sua pizza <strong id="pizzaNomeModal"></strong>:</p>
+                <div class="products-grid" id="saboresGrid"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CARRINHO (MULTI-STEP) -->
+    <div class="cart-overlay" id="cartOverlay">
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h3>Finalizar Pedido</h3>
+                <button class="modal-close" id="closeCart">&times;</button>
+            </div>
+            
+            <div class="cart-steps">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div>Carrinho</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div>Dados</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div>Confirmação</div>
+                </div>
+            </div>
+            
+            <div class="cart-content" id="cartContent">
+                <!-- Conteúdo será carregado dinamicamente -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel">
+        <button class="admin-toggle" id="adminToggle">
+            <i class="fas fa-user-shield"></i>
+        </button>
+    </div>
+    
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-content">
+            <div class="modal-header">
+                <h3>Painel Administrativo</h3>
+                <button class="modal-close" id="closeAdminModal">&times;</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-target="pedidos">Pedidos</button>
+                <button class="admin-tab" data-target="cardapio">Editar Cardápio</button>
+                <button class="admin-tab" data-target="config">Configurações</button>
+            </div>
+            
+            <div class="admin-section active" id="pedidosSection">
+                <div style="margin-bottom: 25px;">
+                    <h4 style="margin-bottom: 15px;">Login de Administrador</h4>
+                    <input type="password" id="adminSenha" placeholder="Digite a senha de administrador" 
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 15px;">
+                    <button class="btn-secondary" id="adminLoginBtn">Entrar</button>
+                </div>
+                
+                <div id="adminConteudo" style="display: none;">
+                    <h4>Pedidos Recebidos</h4>
+                    <div id="pedidosLista"></div>
+                </div>
+            </div>
+            
+            <div class="admin-section" id="cardapioSection">
+                <div style="margin-bottom: 25px;">
+                    <h4 style="margin-bottom: 15px;">Editar Cardápio</h4>
+                    <p style="color: var(--cinza-claro); margin-bottom: 20px;">Altere os preços dos produtos diretamente na tabela.</p>
+                    
+                    <div class="admin-tabs" style="margin-bottom: 20px;">
+                        <button class="admin-tab active" data-categoria="pizzas">Pizzas</button>
+                        <button class="admin-tab" data-categoria="tapiocas">Tapiocas</button>
+                        <button class="admin-tab" data-categoria="bebidas">Bebidas</button>
+                    </div>
+                    
+                    <div id="cardapioConteudo"></div>
+                </div>
+            </div>
+            
+            <div class="admin-section" id="configSection">
+                <h4>Configurações do Sistema</h4>
+                <p style="color: var(--cinza-claro); margin: 20px 0;">Em desenvolvimento.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>KF Sabores</h3>
+                    <p>Pizzaria & Tapiocaria Delivery</p>
+                    <p>Rua Pitombeiras 488</p>
+                    <p>Paciência - Rio de Janeiro/RJ</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Horário de Funcionamento</h3>
+                    <p><strong>Todos os dias:</strong></p>
+                    <p>20:00 às 00:00</p>
+                    <a href="https://wa.me/5521997437285" class="whatsapp-contact" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pedir pelo WhatsApp
+                    </a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Formas de Pagamento</h3>
+                    <ul>
+                        <li>💵 Dinheiro</li>
+                        <li>💳 Cartão de Crédito/Débito</li>
+                        <li>📱 PIX</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <p><i class="fas fa-phone"></i> (21) 99743-7285</p>
+                    <p><i class="fas fa-clock"></i> Tempo de entrega: 40 min</p>
+                    <p><i class="fas fa-truck"></i> Taxa de entrega conforme zona</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 KF Sabores - Todos os direitos reservados.</p>
+                <p>Sistema de delivery desenvolvido especialmente para pizzaria e tapiocaria.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT PRINCIPAL -->
+    <script>
+        // DADOS DO SISTEMA
+        const sistema = {
+            pizzas: {
+                tradicionais: [
+                    { id: 1, nome: "MUSSARELA", desc: "Molho, mussarela e orégano", preco25: 24, preco35: 39 },
+                    { id: 2, nome: "PRESUNTO", desc: "Molho, mussarela, presunto e orégano", preco25: 24, preco35: 39 },
+                    { id: 3, nome: "CALABRESA", desc: "Molho, mussarela, calabresa, cebola e orégano", preco25: 24, preco35: 39 },
+                    { id: 4, nome: "3 QUEIJOS", desc: "Molho, mussarela, catupiry, cheddar e orégano", preco25: 24, preco35: 39 },
+                    { id: 5, nome: "MARGUERITA", desc: "Molho, mussarela, tomate, manjericão e orégano", preco25: 24, preco35: 39 },
+                    { id: 6, nome: "ALHO", desc: "Molho, mussarela, alho frito e orégano", preco25: 24, preco35: 39 },
+                    { id: 7, nome: "MINEIRA", desc: "Molho, mussarela, queijo minas e orégano", preco25: 24, preco35: 39 },
+                    { id: 8, nome: "MISTA", desc: "Molho, mussarela, calabresa, presunto e orégano", preco25: 24, preco35: 39 },
+                    { id: 9, nome: "PALMITO", desc: "Molho, mussarela, palmito, alho frito e orégano", preco25: 24, preco35: 39 }
+                ],
+                especiais: [
+                    { id: 10, nome: "FRANGO C/ CATUPIRY", desc: "Molho, mussarela, frango, catupiry e orégano", preco25: 29, preco35: 43 },
+                    { id: 11, nome: "FRANGO C/CHEDDAR", desc: "Molho, mussarela, frango, cheddar e orégano", preco25: 29, preco35: 43 },
+                    { id: 12, nome: "PORTUGUESA", desc: "Molho, mussarela, calabresa, presunto, cebola, tomate, pimentão, azeitona, ovo e orégano", preco25: 29, preco35: 43 },
+                    { id: 13, nome: "LOMBO CANADENSE", desc: "Molho, mussarela, lombo canadense e orégano", preco25: 29, preco35: 43 },
+                    { id: 14, nome: "PEITO DE PERU", desc: "Molho, mussarela, peito de peru e orégano", preco25: 29, preco35: 43 }
+                ],
+                premium: [
+                    { id: 15, nome: "BACON COM OVOS", desc: "Molho, mussarela, bacon, ovos e orégano", preco25: 32, preco35: 58 },
+                    { id: 16, nome: "CAMARÃO C/CATUPIRY", desc: "Molho, mussarela, camarão, catupiry e orégano", preco25: 32, preco35: 58 },
+                    { id: 17, nome: "CAMARÃO C/ALHO", desc: "Molho, mussarela, camarão, alho e orégano", preco25: 32, preco35: 58 }
+                ],
+                doces: [
+                    { id: 18, nome: "BANANA com CANELA", desc: "Molho, mussarela, banana, açúcar e canela", preco25: 30, preco35: 45 },
+                    { id: 19, nome: "PRESTIGIO", desc: "Chocolate preto e coco", preco25: 30, preco35: 45 },
+                    { id: 20, nome: "M&M", desc: "Chocolate preto e m&m", preco25: 30, preco35: 45 },
+                    { id: 21, nome: "PAÇOCA", desc: "Chocolate preto e paçoca", preco25: 30, preco35: 45 },
+                    { id: 22, nome: "ROMEU E JULIETA", desc: "Molho, mussarela e goiabada", preco25: 30, preco35: 45 },
+                    { id: 23, nome: "CARIBE", desc: "Chocolate preto com banana e Gotas de chocolate", preco25: 30, preco35: 45 },
+                    { id: 24, nome: "SENSAÇÃO", desc: "Chocolate preto com morango e gotas de chocolate", preco25: 30, preco35: 45 },
+                    { id: 25, nome: "BANANA NEVADA", desc: "Mussarela, banana, açúcar, canela e chocolate branco", preco25: 30, preco35: 45 }
+                ]
+            },
+            
+            tapiocas: {
+                proteinas: [
+                    { id: 101, nome: "Lombo Canadense", preco: 10.00 },
+                    { id: 102, nome: "Peito de Peru", preco: 13.00 },
+                    { id: 103, nome: "Calabresa", preco: 10.00 },
+                    { id: 104, nome: "Presunto", preco: 10.00 },
+                    { id: 105, nome: "Frango", preco: 13.00 }
+                ],
+                frutas: [
+                    { id: 106, nome: "Coco", preco: 10.00 },
+                    { id: 107, nome: "Morango", preco: 14.00 },
+                    { id: 108, nome: "Abacaxi", preco: 10.00 },
+                    { id: 109, nome: "Banana", preco: 10.00 }
+                ],
+                queijos: [
+                    { id: 110, nome: "Minas", preco: 10.00 },
+                    { id: 111, nome: "Mussarela", preco: 10.00 },
+                    { id: 112, nome: "Requeijão", preco: 10.00 },
+                    { id: 113, nome: "Catupiry", preco: 10.00 },
+                    { id: 114, nome: "Cheddar", preco: 10.00 }
+                ],
+                doces: [
+                    { id: 115, nome: "Nutella", preco: 16.00 },
+                    { id: 116, nome: "Chocolate Branco", preco: 14.00 },
+                    { id: 117, nome: "Chocolate Preto", preco: 14.00 },
+                    { id: 118, nome: "M&M", preco: 10.00 },
+                    { id: 119, nome: "Doce de Leite", preco: 10.00 },
+                    { id: 120, nome: "Goiabada", preco: 10.00 },
+                    { id: 121, nome: "Paçoca", preco: 10.00 }
+                ]
+            },
+            
+            acompanhamentos: [
+                { id: 201, nome: "Leite Condensado" },
+                { id: 202, nome: "Açúcar c/ Canela" },
+                { id: 203, nome: "Granulado" },
+                { id: 204, nome: "Orégano" },
+                { id: 205, nome: "Cebola" },
+                { id: 206, nome: "Tomate" },
+                { id: 207, nome: "Azeitona" },
+                { id: 208, nome: "Manteiga" },
+                { id: 209, nome: "Alho Torrado" },
+                { id: 210, nome: "Molho de Alho" },
+                { id: 211, nome: "Molho de Pizza" }
+            ],
+            
+            bebidas: [
+                { id: 301, nome: "Água 500ml", preco: 2.50 },
+                { id: 302, nome: "Água c/ Gás 500ml", preco: 3.00 },
+                { id: 303, nome: "Guaracamp 350ml", preco: 2.50 },
+                { id: 304, nome: "Refrigerante Lata (COCA-COLA)", preco: 6.00 },
+                { id: 305, nome: "Refrigerante 1L (ANTARCTICA)", preco: 8.00 },
+                { id: 306, nome: "Refrigerante 1,5L (ANTARCTICA ou PEPSI)", preco: 10.00 },
+                { id: 307, nome: "Refrigerante 2L (SUKITA UVA)", preco: 10.00 },
+                { id: 308, nome: "Refrigerante 2L (SUKITA LARANJA)", preco: 10.00 },
+                { id: 309, nome: "Refrigerante 2L (SUKITA LIMÃO)", preco: 10.00 }
+            ],
+            
+            zonas: [
+                { nome: "Zona 1", taxa: 3.00, tempo: "30 min", bairros: ["Paciência Centro", "Vila Paciência"] },
+                { nome: "Zona 2", taxa: 5.00, tempo: "40 min", bairros: ["Santa Cruz", "Sepetiba"] },
+                { nome: "Zona 3", taxa: 8.00, tempo: "50 min", bairros: ["Campo Grande", "Santíssimo"] }
+            ]
+        };
+        
+        // ESTADO DO SISTEMA
+        const estado = {
+            carrinho: JSON.parse(localStorage.getItem('kf_carrinho')) || [],
+            pizzaAtual: null,
+            tamanhoAtual: null,
+            precoAtual: null,
+            tapiocaRecheios: [],
+            tapiocaAcompanhamento: null,
+            zonaEntrega: null,
+            dadosCliente: JSON.parse(localStorage.getItem('kf_cliente')) || {
+                nome: "",
+                telefone: "",
+                endereco: "",
+                referencia: "",
+                pagamento: ""
+            },
+            stepAtual: 1,
+            adminLogado: false
+        };
+        
+        // ELEMENTOS DOM
+        const elementos = {
+            // Navegação
+            navTabs: document.querySelectorAll('.nav-tab'),
+            menuSections: document.querySelectorAll('.menu-section'),
+            
+            // Carrinho
+            cartOverlay: document.getElementById('cartOverlay'),
+            openCartBtn: document.getElementById('openCart'),
+            closeCartBtn: document.getElementById('closeCart'),
+            cartCount: document.getElementById('cartCount'),
+            cartContent: document.getElementById('cartContent'),
+            
+            // Steps
+            step1: document.getElementById('step1'),
+            step2: document.getElementById('step2'),
+            step3: document.getElementById('step3'),
+            
+            // Modal segundo sabor
+            saborModal: document.getElementById('saborModal'),
+            closeSaborModal: document.getElementById('closeSaborModal'),
+            pizzaNomeModal: document.getElementById('pizzaNomeModal'),
+            saboresGrid: document.getElementById('saboresGrid'),
+            
+            // Tapioca
+            tapiocaPreco: document.getElementById('tapioca-preco'),
+            addTapiocaBtn: document.getElementById('addTapiocaBtn'),
+            
+            // Mapa
+            verificarZonaBtn: document.getElementById('verificarZonaBtn'),
+            zonaResultado: document.getElementById('zonaResultado'),
+            
+            // Admin
+            adminModal: document.getElementById('adminModal'),
+            adminToggle: document.getElementById('adminToggle'),
+            closeAdminModal: document.getElementById('closeAdminModal'),
+            adminSenha: document.getElementById('adminSenha'),
+            adminLoginBtn: document.getElementById('adminLoginBtn'),
+            adminTabs: document.querySelectorAll('.admin-tab'),
+            adminSections: document.querySelectorAll('.admin-section'),
+            cardapioConteudo: document.getElementById('cardapioConteudo'),
+            pedidosLista: document.getElementById('pedidosLista')
+        };
+        
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarSistema();
+            carregarPizzas();
+            carregarTapiocas();
+            carregarBebidas();
+            configurarEventos();
+            atualizarCarrinho();
+        });
+        
+        function inicializarSistema() {
+            // Configurar navegação
+            elementos.navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    
+                    // Atualizar aba ativa
+                    elementos.navTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar seção correspondente
+                    elementos.menuSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    });
+                });
+            });
+            
+            // Configurar eventos do carrinho
+            elementos.openCartBtn.addEventListener('click', () => {
+                if (estado.carrinho.length === 0) {
+                    alert('Seu carrinho está vazio! Adicione alguns produtos primeiro.');
+                    return;
+                }
+                estado.stepAtual = 1;
+                mostrarStepCarrinho();
+                elementos.cartOverlay.classList.add('active');
+            });
+            
+            elementos.closeCartBtn.addEventListener('click', () => {
+                elementos.cartOverlay.classList.remove('active');
+            });
+            
+            // Fechar modal ao clicar fora
+            elementos.cartOverlay.addEventListener('click', (e) => {
+                if (e.target === elementos.cartOverlay) {
+                    elementos.cartOverlay.classList.remove('active');
+                }
+            });
+            
+            // Configurar modal de segundo sabor
+            elementos.closeSaborModal.addEventListener('click', () => {
+                elementos.saborModal.classList.remove('active');
+            });
+            
+            elementos.saborModal.addEventListener('click', (e) => {
+                if (e.target === elementos.saborModal) {
+                    elementos.saborModal.classList.remove('active');
+                }
+            });
+            
+            // Configurar admin
+            elementos.adminToggle.addEventListener('click', () => {
+                elementos.adminModal.classList.add('active');
+            });
+            
+            elementos.closeAdminModal.addEventListener('click', () => {
+                elementos.adminModal.classList.remove('active');
+            });
+            
+            elementos.adminLoginBtn.addEventListener('click', fazerLoginAdmin);
+            
+            // Configurar tabs do admin
+            elementos.adminTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.dataset.target;
+                    
+                    // Atualizar tabs
+                    elementos.adminTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar seção correspondente
+                    elementos.adminSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === target + 'Section') {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    // Se for cardapio e admin logado, carregar
+                    if (target === 'cardapio' && estado.adminLogado) {
+                        carregarCardapioAdmin();
+                    }
+                });
+            });
+            
+            // Configurar verificação de zona
+            elementos.verificarZonaBtn.addEventListener('click', verificarZona);
+        }
+        
+        // CARREGAR PIZZAS
+        function carregarPizzas() {
+            // Tradicionais
+            const tradContainer = document.getElementById('pizzas-tradicionais');
+            sistema.pizzas.tradicionais.forEach(pizza => {
+                tradContainer.appendChild(criarCardPizza(pizza, 'tradicionais'));
+            });
+            
+            // Especiais
+            const espContainer = document.getElementById('pizzas-especiais');
+            sistema.pizzas.especiais.forEach(pizza => {
+                espContainer.appendChild(criarCardPizza(pizza, 'especiais'));
+            });
+            
+            // Premium
+            const premContainer = document.getElementById('pizzas-premium');
+            sistema.pizzas.premium.forEach(pizza => {
+                premContainer.appendChild(criarCardPizza(pizza, 'premium'));
+            });
+            
+            // Doces
+            const docesContainer = document.getElementById('pizzas-doces');
+            sistema.pizzas.doces.forEach(pizza => {
+                docesContainer.appendChild(criarCardPizza(pizza, 'doces'));
+            });
+        }
+        
+        function criarCardPizza(pizza, categoria) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            const icon = categoria === 'doces' ? 'fas fa-cookie-bite' : 'fas fa-pizza-slice';
+            
+            card.innerHTML = `
+                <div class="product-image">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="product-content">
+                    <div class="product-header">
+                        <div class="product-name">${pizza.nome}</div>
+                        <div class="product-price">R$ ${pizza.preco25},00</div>
+                    </div>
+                    <p class="product-description">${pizza.desc}</p>
+                    
+                    <div class="pizza-sizes">
+                        <div class="size-option active" data-size="25cm" data-preco="${pizza.preco25}">
+                            <div class="size-name">25cm</div>
+                            <div class="size-price">R$ ${pizza.preco25},00</div>
+                        </div>
+                        <div class="size-option" data-size="35cm" data-preco="${pizza.preco35}">
+                            <div class="size-name">35cm</div>
+                            <div class="size-price">R$ ${pizza.preco35},00</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary add-pizza-btn" data-pizza-id="${pizza.id}">
+                        <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+                    </button>
+                </div>
+            `;
+            
+            // Eventos para tamanhos
+            const sizeOptions = card.querySelectorAll('.size-option');
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sizeOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Atualizar preço no card
+                    const preco = this.dataset.preco;
+                    card.querySelector('.product-price').textContent = `R$ ${preco},00`;
+                });
+            });
+            
+            // Evento para adicionar ao carrinho
+            const addBtn = card.querySelector('.add-pizza-btn');
+            addBtn.addEventListener('click', function() {
+                const pizzaId = parseInt(this.dataset.pizzaId);
+                const tamanhoAtivo = card.querySelector('.size-option.active');
+                const tamanho = tamanhoAtivo.dataset.size;
+                const preco = parseFloat(tamanhoAtivo.dataset.preco);
+                
+                // Encontrar pizza nos dados
+                const todasPizzas = [...sistema.pizzas.tradicionais, ...sistema.pizzas.especiais, 
+                                    ...sistema.pizzas.premium, ...sistema.pizzas.doces];
+                const pizzaSelecionada = todasPizzas.find(p => p.id === pizzaId);
+                
+                // Guardar dados para modal de segundo sabor
+                estado.pizzaAtual = pizzaSelecionada;
+                estado.tamanhoAtual = tamanho;
+                estado.precoAtual = preco;
+                
+                // Mostrar modal para escolher segundo sabor
+                mostrarModalSegundoSabor(pizzaSelecionada);
+            });
+            
+            return card;
+        }
+        
+        function mostrarModalSegundoSabor(pizzaPrincipal) {
+            // Limpar grid de sabores
+            elementos.saboresGrid.innerHTML = '';
+            
+            // Mostrar nome da pizza principal
+            elementos.pizzaNomeModal.textContent = pizzaPrincipal.nome;
+            
+            // Coletar todas as pizzas (exceto a principal)
+            const todasPizzas = [
+                ...sistema.pizzas.tradicionais,
+                ...sistema.pizzas.especiais,
+                ...sistema.pizzas.premium,
+                ...sistema.pizzas.doces
+            ].filter(p => p.id !== pizzaPrincipal.id);
+            
+            // Adicionar opção "Sem segundo sabor"
+            const semSegundoCard = document.createElement('div');
+            semSegundoCard.className = 'product-card';
+            semSegundoCard.innerHTML = `
+                <div class="product-image">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="product-content">
+                    <div class="product-header">
+                        <div class="product-name">Apenas 1 sabor</div>
+                    </div>
+                    <p class="product-description">Adicionar apenas ${pizzaPrincipal.nome}</p>
+                    <button class="btn-secondary escolher-sabor-btn" data-sabor-id="0">
+                        Escolher este
+                    </button>
+                </div>
+            `;
+            
+            semSegundoCard.querySelector('.escolher-sabor-btn').addEventListener('click', function() {
+                adicionarPizzaAoCarrinho(pizzaPrincipal, null);
+                elementos.saborModal.classList.remove('active');
+            });
+            
+            elementos.saboresGrid.appendChild(semSegundoCard);
+            
+            // Adicionar outras pizzas como opções
+            todasPizzas.forEach(pizza => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                card.innerHTML = `
+                    <div class="product-image">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">${pizza.nome}</div>
+                        </div>
+                        <p class="product-description">${pizza.desc}</p>
+                        <button class="btn-secondary escolher-sabor-btn" data-sabor-id="${pizza.id}">
+                            Escolher este
+                        </button>
+                    </div>
+                `;
+                
+                card.querySelector('.escolher-sabor-btn').addEventListener('click', function() {
+                    adicionarPizzaAoCarrinho(pizzaPrincipal, pizza);
+                    elementos.saborModal.classList.remove('active');
+                });
+                
+                elementos.saboresGrid.appendChild(card);
+            });
+            
+            // Mostrar modal
+            elementos.saborModal.classList.add('active');
+        }
+        
+        function adicionarPizzaAoCarrinho(pizza1, pizza2) {
+            // Calcular preço (mais caro)
+            const precoPizza1 = estado.tamanhoAtual === '25cm' ? pizza1.preco25 : pizza1.preco35;
+            const precoPizza2 = pizza2 ? (estado.tamanhoAtual === '25cm' ? pizza2.preco25 : pizza2.preco35) : 0;
+            const precoFinal = Math.max(precoPizza1, precoPizza2);
+            
+            // Criar item do carrinho
+            const item = {
+                id: Date.now(),
+                tipo: 'pizza',
+                nome: pizza1.nome,
+                tamanho: estado.tamanhoAtual,
+                preco: precoFinal,
+                quantidade: 1,
+                sabor2: pizza2 ? pizza2.nome : null
+            };
+            
+            estado.carrinho.push(item);
+            salvarCarrinho();
+            atualizarCarrinho();
+            
+            // Feedback
+            alert(`✅ ${pizza1.nome} ${estado.tamanhoAtual} adicionada ao carrinho!${pizza2 ? `\nCom segundo sabor: ${pizza2.nome}` : ''}`);
+        }
+        
+        // CARREGAR TAPIOCAS
+        function carregarTapiocas() {
+            const recheiosGrid = document.getElementById('recheios-grid');
+            const acompanhamentosGrid = document.getElementById('acompanhamentos-grid');
+            
+            // Carregar todos os recheios
+            const todosRecheios = [
+                ...sistema.tapiocas.proteinas,
+                ...sistema.tapiocas.frutas,
+                ...sistema.tapiocas.queijos,
+                ...sistema.tapiocas.doces
+            ];
+            
+            todosRecheios.forEach(recheio => {
+                const option = document.createElement('div');
+                option.className = 'builder-option';
+                option.dataset.recheioId = recheio.id;
+                option.innerHTML = `
+                    <div class="option-name">${recheio.nome}</div>
+                    <div class="option-price">R$ ${recheio.preco.toFixed(2)}</div>
+                `;
+                
+                option.addEventListener('click', function() {
+                    const recheioId = parseInt(this.dataset.recheioId);
+                    const recheioSelecionado = todosRecheios.find(r => r.id === recheioId);
+                    
+                    // Adicionar ou remover da seleção
+                    const index = estado.tapiocaRecheios.findIndex(r => r.id === recheioId);
+                    
+                    if (index === -1) {
+                        // Se ainda não selecionou 2, adiciona
+                        if (estado.tapiocaRecheios.length < 2) {
+                            estado.tapiocaRecheios.push(recheioSelecionado);
+                            this.classList.add('selected');
+                        }
+                    } else {
+                        // Remove se já está selecionado
+                        estado.tapiocaRecheios.splice(index, 1);
+                        this.classList.remove('selected');
+                    }
+                    
+                    atualizarTapiocaPreco();
+                });
+                
+                recheiosGrid.appendChild(option);
+            });
+            
+            // Carregar acompanhamentos
+            sistema.acompanhamentos.forEach(acomp => {
+                const option = document.createElement('div');
+                option.className = 'builder-option';
+                option.dataset.acompId = acomp.id;
+                option.innerHTML = `
+                    <div class="option-name">${acomp.nome}</div>
+                    <div class="option-price">Grátis</div>
+                `;
+                
+                option.addEventListener('click', function() {
+                    // Remover seleção de todos
+                    document.querySelectorAll('#acompanhamentos-grid .builder-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Selecionar este
+                    this.classList.add('selected');
+                    estado.tapiocaAcompanhamento = acomp.nome;
+                });
+                
+                acompanhamentosGrid.appendChild(option);
+            });
+            
+            // Configurar botão de adicionar tapioca
+            elementos.addTapiocaBtn.addEventListener('click', adicionarTapiocaAoCarrinho);
+        }
+        
+        function atualizarTapiocaPreco() {
+            if (estado.tapiocaRecheios.length === 2) {
+                // Cobra o mais caro
+                const preco1 = estado.tapiocaRecheios[0].preco;
+                const preco2 = estado.tapiocaRecheios[1].preco;
+                const precoFinal = Math.max(preco1, preco2);
+                
+                elementos.tapiocaPreco.textContent = `R$ ${precoFinal.toFixed(2)}`;
+                elementos.addTapiocaBtn.disabled = false;
+            } else {
+                elementos.tapiocaPreco.textContent = `R$ 0,00`;
+                elementos.addTapiocaBtn.disabled = true;
+            }
+        }
+        
+        function adicionarTapiocaAoCarrinho() {
+            if (estado.tapiocaRecheios.length !== 2) return;
+            
+            // Calcular preço (mais caro)
+            const precoFinal = Math.max(estado.tapiocaRecheios[0].preco, estado.tapiocaRecheios[1].preco);
+            
+            const item = {
+                id: Date.now(),
+                tipo: 'tapioca',
+                nome: 'Tapioca Personalizada',
+                recheio1: estado.tapiocaRecheios[0].nome,
+                recheio2: estado.tapiocaRecheios[1].nome,
+                preco: precoFinal,
+                quantidade: 1,
+                acompanhamento: estado.tapiocaAcompanhamento
+            };
+            
+            estado.carrinho.push(item);
+            salvarCarrinho();
+            atualizarCarrinho();
+            
+            // Limpar seleção
+            estado.tapiocaRecheios = [];
+            estado.tapiocaAcompanhamento = null;
+            
+            // Resetar UI
+            document.querySelectorAll('.builder-option.selected').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            elementos.tapiocaPreco.textContent = `R$ 0,00`;
+            elementos.addTapiocaBtn.disabled = true;
+            
+            alert(`✅ Tapioca adicionada ao carrinho!`);
+        }
+        
+        // CARREGAR BEBIDAS
+        function carregarBebidas() {
+            const bebidasGrid = document.getElementById('bebidas-grid');
+            
+            sistema.bebidas.forEach(bebida => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                card.innerHTML = `
+                    <div class="product-image">
+                        <i class="fas fa-wine-bottle"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-header">
+                            <div class="product-name">${bebida.nome}</div>
+                            <div class="product-price">R$ ${bebida.preco.toFixed(2)}</div>
+                        </div>
+                        <button class="btn-primary add-bebida-btn" data-bebida-id="${bebida.id}">
+                            <i class="fas fa-cart-plus"></i> Adicionar
+                        </button>
+                    </div>
+                `;
+                
+                card.querySelector('.add-bebida-btn').addEventListener('click', function() {
+                    const bebidaId = parseInt(this.dataset.bebidaId);
+                    const bebidaSelecionada = sistema.bebidas.find(b => b.id === bebidaId);
+                    
+                    adicionarBebidaAoCarrinho(bebidaSelecionada);
+                });
+                
+                bebidasGrid.appendChild(card);
+            });
+        }
+        
+        function adicionarBebidaAoCarrinho(bebida) {
+            const item = {
+                id: Date.now(),
+                tipo: 'bebida',
+                nome: bebida.nome,
+                preco: bebida.preco,
+                quantidade: 1
+            };
+            
+            estado.carrinho.push(item);
+            salvarCarrinho();
+            atualizarCarrinho();
+            
+            alert(`✅ ${bebida.nome} adicionada ao carrinho!`);
+        }
+        
+        // CARRINHO E CHECKOUT MULTI-STEP
+        function salvarCarrinho() {
+            localStorage.setItem('kf_carrinho', JSON.stringify(estado.carrinho));
+        }
+        
+        function atualizarCarrinho() {
+            // Atualizar contador
+            const totalItens = estado.carrinho.reduce((total, item) => total + item.quantidade, 0);
+            elementos.cartCount.textContent = totalItens;
+        }
+        
+        function mostrarStepCarrinho() {
+            // Atualizar steps
+            elementos.step1.classList.remove('active');
+            elementos.step2.classList.remove('active');
+            elementos.step3.classList.remove('active');
+            
+            if (estado.stepAtual === 1) {
+                elementos.step1.classList.add('active');
+                mostrarStep1();
+            } else if (estado.stepAtual === 2) {
+                elementos.step2.classList.add('active');
+                mostrarStep2();
+            } else if (estado.stepAtual === 3) {
+                elementos.step3.classList.add('active');
+                mostrarStep3();
+            }
+        }
+        
+        function mostrarStep1() {
+            let html = `
+                <h3 style="margin-bottom: 20px;">Seu Carrinho</h3>
+                <div class="cart-items">
+            `;
+            
+            if (estado.carrinho.length === 0) {
+                html += `
+                    <div style="text-align: center; padding: 50px 20px; color: var(--cinza-claro);">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p>Seu carrinho está vazio</p>
+                    </div>
+                `;
+            } else {
+                estado.carrinho.forEach((item, index) => {
+                    let detalhes = '';
+                    if (item.tipo === 'pizza') {
+                        detalhes = `${item.tamanho}`;
+                        if (item.sabor2) {
+                            detalhes += ` • 2 sabores: ${item.sabor2}`;
+                        }
+                    } else if (item.tipo === 'tapioca') {
+                        detalhes = `${item.recheio1} + ${item.recheio2}`;
+                        if (item.acompanhamento) {
+                            detalhes += ` • Acomp: ${item.acompanhamento}`;
+                        }
+                    }
+                    
+                    html += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <h4>${item.nome}</h4>
+                                <p class="cart-item-details">${detalhes}</p>
+                                <p class="cart-item-price">R$ ${item.preco.toFixed(2)}</p>
+                            </div>
+                            <div class="cart-item-actions">
+                                <div class="cart-quantity">
+                                    <button onclick="alterarQuantidade(${index}, -1)">-</button>
+                                    <span>${item.quantidade}</span>
+                                    <button onclick="alterarQuantidade(${index}, 1)">+</button>
+                                </div>
+                                <div onclick="removerItem(${index})" style="cursor: pointer; color: var(--vermelho);">
+                                    <i class="fas fa-trash"></i>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += `</div>`;
+            
+            // Calcular totais
+            const subtotal = estado.carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            let taxa = 0;
+            if (subtotal > 0) {
+                if (estado.zonaEntrega) {
+                    const zona = sistema.zonas.find(z => z.nome === estado.zonaEntrega);
+                    taxa = zona ? zona.taxa : 5.00;
+                } else {
+                    taxa = 5.00;
+                }
+            }
+            const total = subtotal + taxa;
+            
+            html += `
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>R$ ${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Taxa de entrega:</span>
+                        <span>R$ ${taxa.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span>R$ ${total.toFixed(2)}</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn-back" onclick="fecharCarrinho()" style="flex: 1;">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button class="btn-next" onclick="avancarParaStep2()" style="flex: 2;" ${estado.carrinho.length === 0 ? 'disabled' : ''}>
+                            <i class="fas fa-arrow-right"></i> Continuar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            elementos.cartContent.innerHTML = html;
+        }
+        
+        function mostrarStep2() {
+            const html = `
+                <h3 style="margin-bottom: 20px;">Seus Dados</h3>
+                
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label">Nome Completo *</label>
+                        <input type="text" class="form-input" id="clienteNome" 
+                               value="${estado.dadosCliente.nome}" placeholder="Digite seu nome completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Telefone para Contato *</label>
+                        <input type="tel" class="form-input" id="clienteTelefone" 
+                               value="${estado.dadosCliente.telefone}" placeholder="(21) 99999-9999" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Endereço *</label>
+                            <input type="text" class="form-input" id="clienteEndereco" 
+                                   value="${estado.dadosCliente.endereco}" placeholder="Rua, Número, Bairro" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Ponto de Referência</label>
+                            <input type="text" class="form-input" id="clienteReferencia" 
+                                   value="${estado.dadosCliente.referencia}" placeholder="Ex: Próximo ao mercado">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Forma de Pagamento *</label>
+                        <div class="payment-options">
+                            <div class="payment-option ${estado.dadosCliente.pagamento === 'dinheiro' ? 'selected' : ''}" data-pagamento="dinheiro">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <div>Dinheiro</div>
+                            </div>
+                            <div class="payment-option ${estado.dadosCliente.pagamento === 'cartao' ? 'selected' : ''}" data-pagamento="cartao">
+                                <i class="fas fa-credit-card"></i>
+                                <div>Cartão</div>
+                            </div>
+                            <div class="payment-option ${estado.dadosCliente.pagamento === 'pix' ? 'selected' : ''}" data-pagamento="pix">
+                                <i class="fas fa-qrcode"></i>
+                                <div>PIX</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="trocoSection" style="display: ${estado.dadosCliente.pagamento === 'dinheiro' ? 'block' : 'none'};">
+                        <label class="form-label">Troco para quanto?</label>
+                        <input type="text" class="form-input" id="clienteTroco" 
+                               placeholder="Ex: 50,00 (deixe em branco se não precisa de troco)">
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 30px;">
+                        <button class="btn-back" onclick="voltarParaStep1()" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                        <button class="btn-next" onclick="avancarParaStep3()" style="flex: 2;">
+                            <i class="fas fa-check"></i> Confirmar Dados
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            elementos.cartContent.innerHTML = html;
+            
+            // Configurar eventos dos botões de pagamento
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const pagamento = this.dataset.pagamento;
+                    estado.dadosCliente.pagamento = pagamento;
+                    
+                    // Mostrar/ocultar campo de troco
+                    const trocoSection = document.getElementById('trocoSection');
+                    trocoSection.style.display = pagamento === 'dinheiro' ? 'block' : 'none';
+                });
+            });
+        }
+        
+        function mostrarStep3() {
+            // Calcular totais
+            const subtotal = estado.carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            let taxa = 0;
+            if (subtotal > 0) {
+                if (estado.zonaEntrega) {
+                    const zona = sistema.zonas.find(z => z.nome === estado.zonaEntrega);
+                    taxa = zona ? zona.taxa : 5.00;
+                } else {
+                    taxa = 5.00;
+                }
+            }
+            const total = subtotal + taxa;
+            
+            let itensHtml = '';
+            estado.carrinho.forEach((item, index) => {
+                let detalhes = '';
+                if (item.tipo === 'pizza') {
+                    detalhes = `${item.tamanho}`;
+                    if (item.sabor2) {
+                        detalhes += ` • 2 sabores: ${item.sabor2}`;
+                    }
+                } else if (item.tipo === 'tapioca') {
+                    detalhes = `${item.recheio1} + ${item.recheio2}`;
+                    if (item.acompanhamento) {
+                        detalhes += ` • Acomp: ${item.acompanhamento}`;
+                    }
+                }
+                
+                itensHtml += `
+                    <div style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>${item.quantidade}x ${item.nome}</strong>
+                                <div style="font-size: 0.9rem; color: var(--cinza-claro);">${detalhes}</div>
+                            </div>
+                            <div>R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            const html = `
+                <h3 style="margin-bottom: 20px;">Confirmação do Pedido</h3>
+                
+                <div class="form-section">
+                    <h4 style="margin-bottom: 15px; color: var(--vermelho);">Resumo do Pedido</h4>
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        ${itensHtml}
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="margin-bottom: 10px; color: var(--vermelho);">Dados para Entrega</h4>
+                        <p><strong>Nome:</strong> ${estado.dadosCliente.nome}</p>
+                        <p><strong>Telefone:</strong> ${estado.dadosCliente.telefone}</p>
+                        <p><strong>Endereço:</strong> ${estado.dadosCliente.endereco}</p>
+                        <p><strong>Referência:</strong> ${estado.dadosCliente.referencia || 'Não informada'}</p>
+                        <p><strong>Pagamento:</strong> ${estado.dadosCliente.pagamento === 'dinheiro' ? 'Dinheiro' : 
+                                                         estado.dadosCliente.pagamento === 'cartao' ? 'Cartão' : 'PIX'}</p>
+                    </div>
+                    
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+                        <h4 style="color: var(--verde); margin-bottom: 10px;">Valor Total</h4>
+                        <div style="display: flex; justify-content: space-between; font-size: 1.1rem;">
+                            <div>Subtotal:</div>
+                            <div>R$ ${subtotal.toFixed(2)}</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>Taxa de entrega:</div>
+                            <div>R$ ${taxa.toFixed(2)}</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 700; margin-top: 10px; color: var(--vermelho);">
+                            <div>TOTAL:</div>
+                            <div>R$ ${total.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-back" onclick="voltarParaStep2()" style="flex: 1;">
+                            <i class="fas fa-edit"></i> Corrigir Dados
+                        </button>
+                        <button class="btn-primary" onclick="finalizarPedidoWhatsApp()" style="flex: 2;">
+                            <i class="fab fa-whatsapp"></i> Finalizar via WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            elementos.cartContent.innerHTML = html;
+        }
+        
+        // Funções de navegação do carrinho
+        window.alterarQuantidade = function(index, delta) {
+            const novaQuantidade = estado.carrinho[index].quantidade + delta;
+            
+            if (novaQuantidade < 1) {
+                removerItem(index);
+            } else {
+                estado.carrinho[index].quantidade = novaQuantidade;
+                salvarCarrinho();
+                mostrarStepCarrinho();
+            }
+        };
+        
+        window.removerItem = function(index) {
+            estado.carrinho.splice(index, 1);
+            salvarCarrinho();
+            mostrarStepCarrinho();
+            atualizarCarrinho();
+        };
+        
+        window.fecharCarrinho = function() {
+            elementos.cartOverlay.classList.remove('active');
+        };
+        
+        window.avancarParaStep2 = function() {
+            // Validar se há itens no carrinho
+            if (estado.carrinho.length === 0) {
+                alert('Adicione itens ao carrinho antes de continuar!');
+                return;
+            }
+            
+            estado.stepAtual = 2;
+            mostrarStepCarrinho();
+        };
+        
+        window.voltarParaStep1 = function() {
+            estado.stepAtual = 1;
+            mostrarStepCarrinho();
+        };
+        
+        window.avancarParaStep3 = function() {
+            // Coletar dados do formulário
+            const nome = document.getElementById('clienteNome').value;
+            const telefone = document.getElementById('clienteTelefone').value;
+            const endereco = document.getElementById('clienteEndereco').value;
+            const referencia = document.getElementById('clienteReferencia').value;
+            
+            // Validar campos obrigatórios
+            if (!nome || !telefone || !endereco) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+            
+            if (!estado.dadosCliente.pagamento) {
+                alert('Por favor, selecione uma forma de pagamento!');
+                return;
+            }
+            
+            // Salvar dados
+            estado.dadosCliente = {
+                nome,
+                telefone,
+                endereco,
+                referencia,
+                pagamento: estado.dadosCliente.pagamento
+            };
+            
+            // Salvar no localStorage
+            localStorage.setItem('kf_cliente', JSON.stringify(estado.dadosCliente));
+            
+            estado.stepAtual = 3;
+            mostrarStepCarrinho();
+        };
+        
+        window.voltarParaStep2 = function() {
+            estado.stepAtual = 2;
+            mostrarStepCarrinho();
+        };
+        
+        // VERIFICAR ZONA
+        function verificarZona() {
+            const cepInput = document.getElementById('cepInput');
+            const cep = cepInput.value.trim();
+            
+            if (!cep) {
+                elementos.zonaResultado.style.display = 'block';
+                elementos.zonaResultado.innerHTML = `
+                    <div style="background: #ffebee; color: #c62828; padding: 15px; border-radius: 8px;">
+                        <i class="fas fa-exclamation-circle"></i> Digite um CEP ou endereço.
+                    </div>
+                `;
+                return;
+            }
+            
+            // Simular verificação
+            const zonas = ['Zona 1', 'Zona 2', 'Zona 3'];
+            const zonaAleatoria = zonas[Math.floor(Math.random() * zonas.length)];
+            const zona = sistema.zonas.find(z => z.nome === zonaAleatoria);
+            
+            estado.zonaEntrega = zona.nome;
+            
+            elementos.zonaResultado.style.display = 'block';
+            elementos.zonaResultado.innerHTML = `
+                <div style="background: #e8f5e9; color: #2e7d32; padding: 20px; border-radius: 8px;">
+                    <h4 style="margin-bottom: 10px;"><i class="fas fa-check-circle"></i> Entregamos no seu endereço!</h4>
+                    <p><strong>Zona:</strong> ${zona.nome}</p>
+                    <p><strong>Taxa de entrega:</strong> R$ ${zona.taxa.toFixed(2)}</p>
+                    <p><strong>Tempo estimado:</strong> ${zona.tempo}</p>
+                </div>
+            `;
+        }
+        
+        // FINALIZAR PEDIDO
+        window.finalizarPedidoWhatsApp = function() {
+            // Montar mensagem para WhatsApp
+            let mensagem = `*PEDIDO - KF SABORES*%0A%0A`;
+            
+            // Dados do cliente
+            mensagem += `*DADOS DO CLIENTE:*%0A`;
+            mensagem += `Nome: ${estado.dadosCliente.nome}%0A`;
+            mensagem += `Telefone: ${estado.dadosCliente.telefone}%0A`;
+            mensagem += `Endereço: ${estado.dadosCliente.endereco}%0A`;
+            if (estado.dadosCliente.referencia) {
+                mensagem += `Referência: ${estado.dadosCliente.referencia}%0A`;
+            }
+            mensagem += `%0A`;
+            
+            // Itens do pedido
+            mensagem += `*ITENS DO PEDIDO:*%0A`;
+            
+            estado.carrinho.forEach((item, index) => {
+                mensagem += `${index + 1}. *${item.nome}*%0A`;
+                
+                if (item.tipo === 'pizza') {
+                    mensagem += `   Tamanho: ${item.tamanho}%0A`;
+                    if (item.sabor2) {
+                        mensagem += `   2º sabor: ${item.sabor2}%0A`;
+                    }
+                } else if (item.tipo === 'tapioca') {
+                    mensagem += `   Recheios: ${item.recheio1} + ${item.recheio2}%0A`;
+                    if (item.acompanhamento) {
+                        mensagem += `   Acompanhamento: ${item.acompanhamento}%0A`;
+                    }
+                }
+                
+                mensagem += `   Quantidade: ${item.quantidade}%0A`;
+                mensagem += `   Valor unitário: R$ ${item.preco.toFixed(2)}%0A`;
+                mensagem += `   Subtotal: R$ ${(item.preco * item.quantidade).toFixed(2)}%0A%0A`;
+            });
+            
+            // Calcular totais
+            const subtotal = estado.carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+            let taxa = estado.zonaEntrega ? 
+                sistema.zonas.find(z => z.nome === estado.zonaEntrega).taxa : 5.00;
+            const total = subtotal + taxa;
+            
+            mensagem += `*RESUMO DO PEDIDO:*%0A`;
+            mensagem += `Subtotal: R$ ${subtotal.toFixed(2)}%0A`;
+            mensagem += `Taxa de entrega: R$ ${taxa.toFixed(2)}%0A`;
+            mensagem += `*TOTAL: R$ ${total.toFixed(2)}*%0A%0A`;
+            
+            // Forma de pagamento
+            const pagamentoText = estado.dadosCliente.pagamento === 'dinheiro' ? 'Dinheiro' :
+                                 estado.dadosCliente.pagamento === 'cartao' ? 'Cartão' : 'PIX';
+            mensagem += `*FORMA DE PAGAMENTO:* ${pagamentoText}%0A%0A`;
+            
+            // Nota para o restaurante
+            mensagem += `---%0A`;
+            mensagem += `*KF SABORES - PIZZARIA & TAPIOCARIA*%0A`;
+            mensagem += `(21) 99743-7285 | Rua Pitombeiras 488, Paciência%0A`;
+            mensagem += `Pedido gerado automaticamente pelo sistema de delivery`;
+            
+            // Abrir WhatsApp
+            const numero = '5521997437285';
+            window.open(`https://wa.me/${numero}?text=${mensagem}`, '_blank');
+            
+            // Salvar pedido no histórico (simulado)
+            salvarPedidoNoHistorico();
+            
+            // Limpar carrinho após envio
+            estado.carrinho = [];
+            salvarCarrinho();
+            atualizarCarrinho();
+            elementos.cartOverlay.classList.remove('active');
+            
+            alert('Pedido enviado para o WhatsApp! Em breve entraremos em contato para confirmar.');
+        };
+        
+        function salvarPedidoNoHistorico() {
+            // Em um sistema real, isso seria enviado para um backend
+            const pedido = {
+                id: 'KF-' + Date.now().toString().slice(-6),
+                data: new Date().toLocaleString(),
+                cliente: estado.dadosCliente,
+                itens: estado.carrinho,
+                total: estado.carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0) + 
+                       (estado.zonaEntrega ? sistema.zonas.find(z => z.nome === estado.zonaEntrega).taxa : 5.00),
+                status: 'Recebido'
+            };
+            
+            // Salvar no localStorage para o admin ver
+            const historico = JSON.parse(localStorage.getItem('kf_historico_pedidos')) || [];
+            historico.unshift(pedido);
+            localStorage.setItem('kf_historico_pedidos', JSON.stringify(historico.slice(0, 50))); // Guarda últimos 50 pedidos
+        }
+        
+        // ADMIN FUNCTIONS
+        function fazerLoginAdmin() {
+            const senha = elementos.adminSenha.value;
+            
+            // Senha padrão: "admin123"
+            if (senha === 'admin123') {
+                estado.adminLogado = true;
+                document.getElementById('adminConteudo').style.display = 'block';
+                carregarPedidosAdmin();
+                carregarCardapioAdmin();
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
+        
+        function carregarPedidosAdmin() {
+            const historico = JSON.parse(localStorage.getItem('kf_historico_pedidos')) || [];
+            
+            if (historico.length === 0) {
+                elementos.pedidosLista.innerHTML = `
+                    <div style="background: #f5f5f5; padding: 30px; text-align: center; border-radius: 10px; color: var(--cinza-claro);">
+                        <i class="fas fa-clipboard-list" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p>Nenhum pedido recebido ainda.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<table class="admin-table">';
+            html += `
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            historico.forEach(pedido => {
+                html += `
+                    <tr>
+                        <td><strong>${pedido.id}</strong><br><small>${pedido.data}</small></td>
+                        <td>${pedido.cliente.nome}<br><small>${pedido.cliente.telefone}</small></td>
+                        <td>R$ ${pedido.total.toFixed(2)}</td>
+                        <td>
+                            <select class="status-select" data-pedido-id="${pedido.id}" style="padding: 5px; border-radius: 4px; border: 1px solid #ddd;">
+                                <option value="Recebido" ${pedido.status === 'Recebido' ? 'selected' : ''}>Recebido</option>
+                                <option value="Em preparo" ${pedido.status === 'Em preparo' ? 'selected' : ''}>Em preparo</option>
+                                <option value="Saiu para entrega" ${pedido.status === 'Saiu para entrega' ? 'selected' : ''}>Saiu para entrega</option>
+                                <option value="Entregue" ${pedido.status === 'Entregue' ? 'selected' : ''}>Entregue</option>
+                                <option value="Cancelado" ${pedido.status === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="edit-btn" onclick="verDetalhesPedido('${pedido.id}')">Ver</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table>`;
+            
+            elementos.pedidosLista.innerHTML = html;
+            
+            // Configurar eventos dos selects de status
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const pedidoId = this.dataset.pedidoId;
+                    const novoStatus = this.value;
+                    
+                    // Atualizar no histórico
+                    const historico = JSON.parse(localStorage.getItem('kf_historico_pedidos')) || [];
+                    const pedidoIndex = historico.findIndex(p => p.id === pedidoId);
+                    
+                    if (pedidoIndex !== -1) {
+                        historico[pedidoIndex].status = novoStatus;
+                        localStorage.setItem('kf_historico_pedidos', JSON.stringify(historico));
+                        
+                        alert(`Status do pedido ${pedidoId} atualizado para: ${novoStatus}`);
+                    }
+                });
+            });
+        }
+        
+        window.verDetalhesPedido = function(pedidoId) {
+            const historico = JSON.parse(localStorage.getItem('kf_historico_pedidos')) || [];
+            const pedido = historico.find(p => p.id === pedidoId);
+            
+            if (!pedido) return;
+            
+            let itensHtml = '';
+            pedido.itens.forEach(item => {
+                itensHtml += `<li>${item.quantidade}x ${item.nome} - R$ ${item.preco.toFixed(2)} cada</li>`;
+            });
+            
+            alert(`
+                DETALHES DO PEDIDO ${pedidoId}:
+                
+                Cliente: ${pedido.cliente.nome}
+                Telefone: ${pedido.cliente.telefone}
+                Endereço: ${pedido.cliente.endereco}
+                Referência: ${pedido.cliente.referencia || 'Não informada'}
+                Pagamento: ${pedido.cliente.pagamento === 'dinheiro' ? 'Dinheiro' : 
+                           pedido.cliente.pagamento === 'cartao' ? 'Cartão' : 'PIX'}
+                
+                Itens:
+                ${itensHtml}
+                
+                Total: R$ ${pedido.total.toFixed(2)}
+                Status: ${pedido.status}
+                Data: ${pedido.data}
+            `);
+        };
+        
+        function carregarCardapioAdmin() {
+            // Configurar tabs do cardapio
+            document.querySelectorAll('[data-categoria]').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const categoria = this.dataset.categoria;
+                    
+                    // Atualizar tabs
+                    document.querySelectorAll('[data-categoria]').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar conteúdo
+                    mostrarCardapioCategoria(categoria);
+                });
+            });
+            
+            // Carregar primeira categoria
+            mostrarCardapioCategoria('pizzas');
+        }
+        
+        function mostrarCardapioCategoria(categoria) {
+            let html = '';
+            
+            if (categoria === 'pizzas') {
+                html += `<h5 style="margin-bottom: 15px;">Pizzas Tradicionais</h5>`;
+                html += criarTabelaCardapio(sistema.pizzas.tradicionais, 'pizza');
+                
+                html += `<h5 style="margin-top: 30px; margin-bottom: 15px;">Pizzas Especiais</h5>`;
+                html += criarTabelaCardapio(sistema.pizzas.especiais, 'pizza');
+                
+                html += `<h5 style="margin-top: 30px; margin-bottom: 15px;">Pizzas Premium</h5>`;
+                html += criarTabelaCardapio(sistema.pizzas.premium, 'pizza');
+                
+                html += `<h5 style="margin-top: 30px; margin-bottom: 15px;">Pizzas Doces</h5>`;
+                html += criarTabelaCardapio(sistema.pizzas.doces, 'pizza');
+                
+            } else if (categoria === 'tapiocas') {
+                const todosRecheios = [
+                    ...sistema.tapiocas.proteinas,
+                    ...sistema.tapiocas.frutas,
+                    ...sistema.tapiocas.queijos,
+                    ...sistema.tapiocas.doces
+                ];
+                
+                html += `<h5 style="margin-bottom: 15px;">Recheios de Tapioca</h5>`;
+                html += criarTabelaCardapio(todosRecheios, 'tapioca');
+                
+            } else if (categoria === 'bebidas') {
+                html += `<h5 style="margin-bottom: 15px;">Bebidas</h5>`;
+                html += criarTabelaCardapio(sistema.bebidas, 'bebida');
+            }
+            
+            elementos.cardapioConteudo.innerHTML = html;
+            
+            // Configurar eventos dos botões de edição
+            configurarEventosEdicaoCardapio();
+        }
+        
+        function criarTabelaCardapio(produtos, tipo) {
+            let html = `<table class="admin-table">`;
+            html += `
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        ${tipo === 'pizza' ? '<th>Preço 25cm</th><th>Preço 35cm</th>' : '<th>Preço</th>'}
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            produtos.forEach(produto => {
+                html += `
+                    <tr data-id="${produto.id}" data-tipo="${tipo}">
+                        <td>${produto.nome}</td>
+                `;
+                
+                if (tipo === 'pizza') {
+                    html += `
+                        <td>
+                            <span class="preco-display" data-campo="preco25">R$ ${produto.preco25},00</span>
+                            <input type="number" class="price-input preco-edit" data-campo="preco25" value="${produto.preco25}" style="display: none;" step="0.01" min="0">
+                        </td>
+                        <td>
+                            <span class="preco-display" data-campo="preco35">R$ ${produto.preco35},00</span>
+                            <input type="number" class="price-input preco-edit" data-campo="preco35" value="${produto.preco35}" style="display: none;" step="0.01" min="0">
+                        </td>
+                    `;
+                } else {
+                    html += `
+                        <td>
+                            <span class="preco-display" data-campo="preco">R$ ${produto.preco.toFixed(2)}</span>
+                            <input type="number" class="price-input preco-edit" data-campo="preco" value="${produto.preco}" style="display: none;" step="0.01" min="0">
+                        </td>
+                    `;
+                }
+                
+                html += `
+                        <td>
+                            <button class="edit-btn btn-editar-preco">Editar</button>
+                            <button class="save-btn btn-salvar-preco" style="display: none;">Salvar</button>
+                            <button class="cancel-btn btn-cancelar-preco" style="display: none;">Cancelar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table>`;
+            return html;
+        }
+        
+        function configurarEventosEdicaoCardapio() {
+            // Botões de edição
+            document.querySelectorAll('.btn-editar-preco').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const linha = this.closest('tr');
+                    const tipo = linha.dataset.tipo;
+                    
+                    // Mostrar inputs e ocultar displays
+                    linha.querySelectorAll('.preco-display').forEach(display => {
+                        display.style.display = 'none';
+                    });
+                    linha.querySelectorAll('.preco-edit').forEach(input => {
+                        input.style.display = 'inline-block';
+                    });
+                    
+                    // Mostrar botões de salvar/cancelar
+                    this.style.display = 'none';
+                    linha.querySelector('.btn-salvar-preco').style.display = 'inline-block';
+                    linha.querySelector('.btn-cancelar-preco').style.display = 'inline-block';
+                });
+            });
+            
+            // Botões de salvar
+            document.querySelectorAll('.btn-salvar-preco').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const linha = this.closest('tr');
+                    const id = parseInt(linha.dataset.id);
+                    const tipo = linha.dataset.tipo;
+                    
+                    // Coletar novos valores
+                    if (tipo === 'pizza') {
+                        const preco25 = parseFloat(linha.querySelector('[data-campo="preco25"]').value);
+                        const preco35 = parseFloat(linha.querySelector('[data-campo="preco35"]').value);
+                        
+                        // Atualizar no sistema
+                        let pizzaEncontrada = false;
+                        Object.values(sistema.pizzas).forEach(categoria => {
+                            const pizza = categoria.find(p => p.id === id);
+                            if (pizza) {
+                                pizza.preco25 = preco25;
+                                pizza.preco35 = preco35;
+                                pizzaEncontrada = true;
+                            }
+                        });
+                        
+                        if (pizzaEncontrada) {
+                            // Atualizar display
+                            linha.querySelector('[data-campo="preco25"]').previousElementSibling.textContent = `R$ ${preco25},00`;
+                            linha.querySelector('[data-campo="preco35"]').previousElementSibling.textContent = `R$ ${preco35},00`;
+                        }
+                        
+                    } else if (tipo === 'tapioca') {
+                        const preco = parseFloat(linha.querySelector('[data-campo="preco"]').value);
+                        
+                        // Atualizar no sistema
+                        let recheioEncontrado = false;
+                        Object.values(sistema.tapiocas).forEach(categoria => {
+                            const recheio = categoria.find(r => r.id === id);
+                            if (recheio) {
+                                recheio.preco = preco;
+                                recheioEncontrado = true;
+                            }
+                        });
+                        
+                        if (recheioEncontrado) {
+                            linha.querySelector('[data-campo="preco"]').previousElementSibling.textContent = `R$ ${preco.toFixed(2)}`;
+                        }
+                        
+                    } else if (tipo === 'bebida') {
+                        const preco = parseFloat(linha.querySelector('[data-campo="preco"]').value);
+                        
+                        const bebida = sistema.bebidas.find(b => b.id === id);
+                        if (bebida) {
+                            bebida.preco = preco;
+                            linha.querySelector('[data-campo="preco"]').previousElementSibling.textContent = `R$ ${preco.toFixed(2)}`;
+                        }
+                    }
+                    
+                    // Voltar para modo de visualização
+                    linha.querySelectorAll('.preco-display').forEach(display => {
+                        display.style.display = 'inline';
+                    });
+                    linha.querySelectorAll('.preco-edit').forEach(input => {
+                        input.style.display = 'none';
+                    });
+                    
+                    linha.querySelector('.btn-editar-preco').style.display = 'inline-block';
+                    this.style.display = 'none';
+                    linha.querySelector('.btn-cancelar-preco').style.display = 'none';
+                    
+                    alert('Preço atualizado com sucesso!');
+                });
+            });
+            
+            // Botões de cancelar
+            document.querySelectorAll('.btn-cancelar-preco').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const linha = this.closest('tr');
+                    
+                    // Voltar para modo de visualização
+                    linha.querySelectorAll('.preco-display').forEach(display => {
+                        display.style.display = 'inline';
+                    });
+                    linha.querySelectorAll('.preco-edit').forEach(input => {
+                        input.style.display = 'none';
+                    });
+                    
+                    linha.querySelector('.btn-editar-preco').style.display = 'inline-block';
+                    linha.querySelector('.btn-salvar-preco').style.display = 'none';
+                    this.style.display = 'none';
+                });
+            });
+        }
+        
+        function configurarEventos() {
+            // Rastreamento de pedido (simulado)
+            document.getElementById('verificarZonaBtn').addEventListener('click', verificarZona);
+        }
+    </script>
+</body>
+</html>
